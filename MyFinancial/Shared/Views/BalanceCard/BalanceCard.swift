@@ -8,18 +8,34 @@
 import SwiftUI
 
 struct BalanceCard: View {
+
+    @State private var isHiddenBalance: Bool = false
+
+    @Binding var currentBalance: Double
+
+    func handleHiddenBalance() {
+        isHiddenBalance = !isHiddenBalance
+    }
+
     var body: some View {
         VStack {
             HStack {
                 Text("Tổng số dư")
                 Spacer()
-                Image(systemName: "eye")
+                Button(action: {
+                    self.handleHiddenBalance()
+                }) {
+                    Image(systemName: "eye")
+                }
+                .foregroundStyle(.white)
             }
             .foregroundStyle(.white)
             Spacer()
             HStack {
-                Text("25.750.000 ₫")
-                    .font(.title)
+                Text(
+                    "\(isHiddenBalance ? "••••••••" : currentBalance.formatted(.currency(code: "VND")))"
+                )
+                .font(.title)
                 Spacer()
             }
             .foregroundStyle(.white)
@@ -63,5 +79,20 @@ struct BalanceCard: View {
 }
 
 #Preview {
-    BalanceCard()
+    let topBackgroundColor = LinearGradient(
+        gradient: Gradient(colors: [
+            Color(hex: "2563eb"),
+            Color(hex: "9333ea"),
+        ]),
+        startPoint: .leading,
+        endPoint: .trailing
+    )
+
+    BalanceCard(
+        currentBalance: .constant(1_000_000)
+    )
+    .background(
+        RoundedRectangle(cornerRadius: 16)
+            .fill(topBackgroundColor)
+    )
 }
