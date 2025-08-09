@@ -24,7 +24,7 @@ struct ContentView: View {
         VStack {
             VStack {
                 NavBar()
-                BalanceCard()
+                BalanceCard(currentBalance: .constant(100000000))
             }
             .padding()
             .frame(
